@@ -8,14 +8,18 @@ class EmpptyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Lottie.asset(AnimationsAssets.empty),
-        Text(
-          "Things look empty here. Tap + to start",
-          style: GoogleFonts.poppins(fontSize: 18),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Lottie.asset(AnimationsAssets.empty),
+          Text(
+            "Things look empty here. Tap + to start",
+            style: GoogleFonts.poppins(fontSize: 18),
+          ),
+        ],
+      ),
     );
   }
 }

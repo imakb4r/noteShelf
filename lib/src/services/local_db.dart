@@ -26,4 +26,9 @@ class LocalDBService {
     final isar = await db;
     yield* isar.notes.where().watch(fireImmediately: true);
   }
+
+  void deleteNote({required int id}) async {
+    final isar = await db;
+    isar.writeTxnSync(() => isar.notes.deleteSync(id));
+  }
 }

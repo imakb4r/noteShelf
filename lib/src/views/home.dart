@@ -5,6 +5,8 @@ import 'package:note_shelf/src/res/appStrings.dart';
 import 'package:note_shelf/src/services/local_db.dart';
 import 'package:note_shelf/src/views/widgets/create_note.dart';
 import 'package:note_shelf/src/views/widgets/emptyview.dart';
+import 'package:note_shelf/src/views/widgets/note_list.dart';
+import 'package:note_shelf/src/views/widgets/notes_grid.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -45,33 +47,33 @@ class _HomeViewState extends State<HomeView> {
                 ],
               ),
             ),
-            //EmpptyView(),
+            Expanded(
+              child: StreamBuilder<List<Note>>(
+                  stream: LocalDBService().listenAllNotes(),
+                  builder: (context, snapshot) {
+                    if (snapshot.data == null) {
+                      return const EmpptyView();
+                    }
+                    final notes = snapshot.data!;
 
-            StreamBuilder<List<Note>>(
-                stream: LocalDBService().listenAllNotes(),
-                builder: (context, snapshot) {
-                  if (snapshot.data == null) {
-                    return EmpptyView();
-                  }
-                  final notes = snapshot.data;
-                  return Expanded(
-                    child: ListView.builder(
-                        itemCount: notes!.length,
-                        itemBuilder: (context, index) {
-                          return Text("${notes[index].title}");
-                        }),
-                  );
-                })
+                    return AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      child: isListView
+                          ? NoteList(notes: notes)
+                          : NotesGrid(notes: notes),
+                    );
+                  }),
+            )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => CreateNoteView()));
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const CreateNoteView()));
         },
         backgroundColor: Colors.white,
-        child: Icon(
+        child: const Icon(
           Icons.add,
           color: Colors.green,
         ),

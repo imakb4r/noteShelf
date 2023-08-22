@@ -13,7 +13,7 @@ class App extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       title: AppStrings.appName,
-      home: HomeView(),
+      home: const HomeView(),
     );
   }
 }
